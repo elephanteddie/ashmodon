@@ -14,6 +14,9 @@ namespace AdminApp
 {
     public partial class Form1 : Form
     {
+        public static List<Thread> threads = new List<Thread>();
+        public log dlog;
+
         public Form1()
         {
             InitializeComponent();
@@ -102,13 +105,30 @@ namespace AdminApp
             l("closer");
         }
 
-        private async void logTestToolStripMenuItem_Click(object sender, EventArgs e)
+        private void logTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            log dlog = new log("base", "AdminDebugLog");
+            threads.Add(new Thread(async() => await makelog()));
+            threads.Last().Name = "makelog";
+            threads.Last().Start();
+        }
 
-            if (await dlog.l("test log"))
+        private async Task<bool> makelog()
+        {
+            var task = new log().makelog("base", "AdminDebugLog");
+            dlog = await task;
+
+            if (dlog != null)
                 g("good");
             else el("bad");
+
+            return true;
+        }
+
+        private async void logTest2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (await dlog.l("test"))
+                l("goodl");
+            else el("errl");
         }
     }
 }

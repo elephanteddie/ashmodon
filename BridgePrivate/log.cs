@@ -14,14 +14,15 @@ namespace BridgePrivate
         private string lognameIn;
         private string userIn;
 
-        public log(string usin, string logname1)
+        public async Task<log> makelog(string usin, string logname1)
         {
             lognameIn = logname1;
             userIn = usin;
-            var task = Task.Run(async () =>
-            {
-                return await tableserver.UpsertI<TableEntity>(userIn, "Logs", new TableEntity("Log", lognameIn));
-            });
+
+            if (await tableserver.UpsertI<TableEntity>(userIn, "Logs", new TableEntity("Log", lognameIn)))
+                return this;
+
+            return null;
         }
 
         public async Task<bool> l(string message1)
@@ -36,7 +37,6 @@ namespace BridgePrivate
 
             try
             {
-                Thread.Sleep(5000);
                 return await tableserver.UpsertI<Logs>(userIn, lognameIn, sendLog);
             }
             catch { return false; }

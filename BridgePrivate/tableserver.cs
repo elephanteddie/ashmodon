@@ -20,31 +20,23 @@ namespace BridgePrivate
         public static log blog;
 
         static tableserver()
-        {
-            stores.Add("base", storageAccount);
-            clients.Add("base", tableClient);
-            logs.Add("base", new log("base", "TableStorageUserLog"));
-
-            blog = new log("base", "TableStorageBaseLog");
-
-            var task = Task.Run(async () =>
-            {
-                return await seedDictionaries();
-            });
-
-            if (!task.Result)
-            {
-                var task2 = Task.Run(async () =>
-                {
-                    return await blog.el("error tableserver init");
-                });
-            }              
+        {                        
         }
 
         private static async Task<bool> seedDictionaries()
         {
             try
             {
+                if (!stores.ContainsKey("base"))
+                    stores.Add("base", storageAccount);
+                if (!clients.ContainsKey("base"))
+                    clients.Add("base", tableClient);
+                if (!logs.ContainsKey("base"))
+                    logs.Add("base", await new log().makelog("base", "TableStorageUserLog"));
+                
+                if(blog == null)
+                    blog = await new log().makelog("base", "TableStorageBaseLog");
+
                 List<sacstr> sacs = await GetP<sacstr>("base", "sacinfo", "sacstr");
 
                 foreach (sacstr te in sacs)
@@ -54,7 +46,7 @@ namespace BridgePrivate
                     if (!clients.ContainsKey(te.RowKey))
                         clients.Add(te.RowKey, stores[te.RowKey].CreateCloudTableClient());
                     if (!logs.ContainsKey(te.RowKey))
-                        logs.Add(te.RowKey, new log(te.RowKey, "TableStorageUserLog"));
+                        logs.Add(te.RowKey, await new log().makelog(te.RowKey, "TableStorageUserLog"));
                 }
 
                 return true;
