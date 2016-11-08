@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminApp", "AdminApp\AdminApp.csproj", "{7B370580-9E38-4B17-9A30-BFF73CEB46BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BridgePrivate", "BridgePrivate\BridgePrivate.csproj", "{A9284E52-6847-40B8-96F5-B888F3839087}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B370580-9E38-4B17-9A30-BFF73CEB46BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B370580-9E38-4B17-9A30-BFF73CEB46BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B370580-9E38-4B17-9A30-BFF73CEB46BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B370580-9E38-4B17-9A30-BFF73CEB46BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9284E52-6847-40B8-96F5-B888F3839087}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9284E52-6847-40B8-96F5-B888F3839087}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9284E52-6847-40B8-96F5-B888F3839087}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9284E52-6847-40B8-96F5-B888F3839087}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
