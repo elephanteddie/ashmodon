@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminApp", "AdminApp\AdminA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BridgePrivate", "BridgePrivate\BridgePrivate.csproj", "{A9284E52-6847-40B8-96F5-B888F3839087}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfinityTools", "InfinityTools\InfinityTools.csproj", "{A1E0B631-0465-4DFD-B9EF-1EA65BE63780}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BridgePublic", "BridgePublic\BridgePublic.csproj", "{E05A0EBA-7423-493D-B8C6-BDD1A6FECB45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{A9284E52-6847-40B8-96F5-B888F3839087}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9284E52-6847-40B8-96F5-B888F3839087}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9284E52-6847-40B8-96F5-B888F3839087}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1E0B631-0465-4DFD-B9EF-1EA65BE63780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1E0B631-0465-4DFD-B9EF-1EA65BE63780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1E0B631-0465-4DFD-B9EF-1EA65BE63780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1E0B631-0465-4DFD-B9EF-1EA65BE63780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E05A0EBA-7423-493D-B8C6-BDD1A6FECB45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E05A0EBA-7423-493D-B8C6-BDD1A6FECB45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E05A0EBA-7423-493D-B8C6-BDD1A6FECB45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E05A0EBA-7423-493D-B8C6-BDD1A6FECB45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

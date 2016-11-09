@@ -1,4 +1,4 @@
-﻿namespace AdminApp
+﻿namespace InfinityTools
 {
     partial class Form1
     {
@@ -30,16 +30,13 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
-            this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.logTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.logTest2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.bridgeServiceEmulationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.startRelayChannel1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopRelayChannel1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,16 +48,35 @@
             this.toolStripButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(846, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(986, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 25);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(986, 106);
+            this.panel1.TabIndex = 1;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.BackColor = System.Drawing.SystemColors.InfoText;
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox1.ForeColor = System.Drawing.SystemColors.Menu;
+            this.richTextBox1.Location = new System.Drawing.Point(0, 131);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(986, 360);
+            this.richTextBox1.TabIndex = 2;
+            this.richTextBox1.Text = "";
             // 
             // toolStripDropDownButton1
             // 
             this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.debugToolStripMenuItem,
-            this.bridgeServiceEmulationToolStripMenuItem});
+            this.debugToolStripMenuItem});
             this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
@@ -70,25 +86,11 @@
             // debugToolStripMenuItem
             // 
             this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.logTestToolStripMenuItem,
-            this.logTest2ToolStripMenuItem});
+            this.startRelayChannel1ToolStripMenuItem,
+            this.stopRelayChannel1ToolStripMenuItem});
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            this.debugToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.debugToolStripMenuItem.Text = "Debug";
-            // 
-            // logTestToolStripMenuItem
-            // 
-            this.logTestToolStripMenuItem.Name = "logTestToolStripMenuItem";
-            this.logTestToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
-            this.logTestToolStripMenuItem.Text = "log test";
-            this.logTestToolStripMenuItem.Click += new System.EventHandler(this.logTestToolStripMenuItem_Click);
-            // 
-            // logTest2ToolStripMenuItem
-            // 
-            this.logTest2ToolStripMenuItem.Name = "logTest2ToolStripMenuItem";
-            this.logTest2ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
-            this.logTest2ToolStripMenuItem.Text = "log test 2";
-            this.logTest2ToolStripMenuItem.Click += new System.EventHandler(this.logTest2ToolStripMenuItem_Click);
             // 
             // toolStripButton1
             // 
@@ -102,59 +104,30 @@
             this.toolStripButton1.Text = "Exit";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
-            // panel1
+            // startRelayChannel1ToolStripMenuItem
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 25);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(846, 100);
-            this.panel1.TabIndex = 1;
+            this.startRelayChannel1ToolStripMenuItem.Name = "startRelayChannel1ToolStripMenuItem";
+            this.startRelayChannel1ToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.startRelayChannel1ToolStripMenuItem.Text = "Start Relay Channel 1";
+            this.startRelayChannel1ToolStripMenuItem.Click += new System.EventHandler(this.startRelayChannel1ToolStripMenuItem_Click);
             // 
-            // richTextBox1
+            // stopRelayChannel1ToolStripMenuItem
             // 
-            this.richTextBox1.BackColor = System.Drawing.SystemColors.InfoText;
-            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.ForeColor = System.Drawing.SystemColors.Info;
-            this.richTextBox1.Location = new System.Drawing.Point(0, 125);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(846, 371);
-            this.richTextBox1.TabIndex = 2;
-            this.richTextBox1.Text = "";
-            // 
-            // bridgeServiceEmulationToolStripMenuItem
-            // 
-            this.bridgeServiceEmulationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.startToolStripMenuItem,
-            this.stopToolStripMenuItem});
-            this.bridgeServiceEmulationToolStripMenuItem.Name = "bridgeServiceEmulationToolStripMenuItem";
-            this.bridgeServiceEmulationToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.bridgeServiceEmulationToolStripMenuItem.Text = "BridgeService Emulation";
-            // 
-            // startToolStripMenuItem
-            // 
-            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.startToolStripMenuItem.Text = "Start";
-            this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
-            // 
-            // stopToolStripMenuItem
-            // 
-            this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.stopToolStripMenuItem.Text = "Stop";
-            this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
+            this.stopRelayChannel1ToolStripMenuItem.Name = "stopRelayChannel1ToolStripMenuItem";
+            this.stopRelayChannel1ToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.stopRelayChannel1ToolStripMenuItem.Text = "Stop Relay Channel 1";
+            this.stopRelayChannel1ToolStripMenuItem.Click += new System.EventHandler(this.stopRelayChannel1ToolStripMenuItem_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(846, 496);
+            this.ClientSize = new System.Drawing.Size(986, 491);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "InfinityTools";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
@@ -168,14 +141,11 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.ToolStripMenuItem logTestToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem logTest2ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem bridgeServiceEmulationToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripMenuItem startRelayChannel1ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stopRelayChannel1ToolStripMenuItem;
     }
 }
 

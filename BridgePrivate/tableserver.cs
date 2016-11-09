@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using BridgePublic;
 
 namespace BridgePrivate
 {
@@ -176,39 +177,30 @@ namespace BridgePrivate
                 return null;
             }
         }
-
-        private static async Task<List<T>> GetP<T>(string user, string tableName, string partitionKey) where T : TableEntity, new()
+        
+        public static bool UpsertIS<T>(string user, string tableName, T item) where T : TableEntity, new()
         {
-            if (!await gooduser(user)) return null;
+            if (!gooduserS(user)) return false;
 
             try
             {
-                CloudTable table = await gt(user, tableName);
+                CloudTable table = gtS(user, tableName);
 
-                TableQuery<T> query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
+                TableOperation upsertOperation = TableOperation.InsertOrReplace(item);
+                TableResult res1 = table.Execute(upsertOperation);
 
-                List<T> list = new List<T>();
-                TableContinuationToken tokenn = null;
-
-                do
-                {
-                    TableQuerySegment<T> seg = await table.ExecuteQuerySegmentedAsync<T>(query, tokenn);
-                    tokenn = seg.ContinuationToken;
-                    list.AddRange(seg);
-
-                } while (tokenn != null);
-
-                if (list.Count > 0)
-                    return list;
+                if (res1 != null)
+                    return true;
                 else
                 {
-                    return null;
+                    logs[user].el(item.PartitionKey + " " + item.RowKey + " UpsertI returned null");
+                    return false;
                 }
             }
             catch (Exception ex1)
             {
                 logs[user].ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
-                return null;
+                return false;
             }
         }
 
@@ -247,6 +239,41 @@ namespace BridgePrivate
             }
         }
 
+        private static async Task<List<T>> GetP<T>(string user, string tableName, string partitionKey) where T : TableEntity, new()
+        {
+            if (!await gooduser(user)) return null;
+
+            try
+            {
+                CloudTable table = await gt(user, tableName);
+
+                TableQuery<T> query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
+
+                List<T> list = new List<T>();
+                TableContinuationToken tokenn = null;
+
+                do
+                {
+                    TableQuerySegment<T> seg = await table.ExecuteQuerySegmentedAsync<T>(query, tokenn);
+                    tokenn = seg.ContinuationToken;
+                    list.AddRange(seg);
+
+                } while (tokenn != null);
+
+                if (list.Count > 0)
+                    return list;
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex1)
+            {
+                logs[user].ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
+                return null;
+            }
+        }
+ 
         public static async Task<bool> UpsertI<T>(string user, string tableName, T item) where T : TableEntity, new()
         {
             if (!await gooduser(user)) return false;
@@ -273,30 +300,8 @@ namespace BridgePrivate
             }
         }
 
-        public static bool UpsertIS<T>(string user, string tableName, T item) where T : TableEntity, new()
-        {
-            if (!gooduserS(user)) return false;
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            try
-            {
-                CloudTable table = gtS(user, tableName);
 
-                TableOperation upsertOperation = TableOperation.InsertOrReplace(item);
-                TableResult res1 = table.Execute(upsertOperation);
-
-                if (res1 != null)
-                    return true;
-                else
-                {
-                    logs[user].el(item.PartitionKey + " " + item.RowKey + " UpsertI returned null");
-                    return false;
-                }
-            }
-            catch (Exception ex1)
-            {
-                logs[user].ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
-                return false;
-            }
-        }
     }
 }
