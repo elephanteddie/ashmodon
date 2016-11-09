@@ -37,6 +37,7 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.startRelayChannel1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopRelayChannel1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.channel1TestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,7 +88,8 @@
             // 
             this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.startRelayChannel1ToolStripMenuItem,
-            this.stopRelayChannel1ToolStripMenuItem});
+            this.stopRelayChannel1ToolStripMenuItem,
+            this.channel1TestToolStripMenuItem});
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             this.debugToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.debugToolStripMenuItem.Text = "Debug";
@@ -118,6 +120,13 @@
             this.stopRelayChannel1ToolStripMenuItem.Text = "Stop Relay Channel 1";
             this.stopRelayChannel1ToolStripMenuItem.Click += new System.EventHandler(this.stopRelayChannel1ToolStripMenuItem_Click);
             // 
+            // channel1TestToolStripMenuItem
+            // 
+            this.channel1TestToolStripMenuItem.Name = "channel1TestToolStripMenuItem";
+            this.channel1TestToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.channel1TestToolStripMenuItem.Text = "Channel 1 Test";
+            this.channel1TestToolStripMenuItem.Click += new System.EventHandler(this.channel1TestToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -146,6 +155,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripMenuItem startRelayChannel1ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopRelayChannel1ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem channel1TestToolStripMenuItem;
     }
 }
 
