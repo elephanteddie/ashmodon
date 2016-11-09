@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using Microsoft.WindowsAzure.Storage.Blob;
 using BridgePrivate;
 using BridgePublic;
 using System.Diagnostics;
@@ -65,8 +66,20 @@ namespace AdminApp
 
         private void logTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dlog.l("hi there");
-            l("hi");
+            new Thread( async () => 
+            {
+
+                string cbc = await blobserver.GetLock("base", "testcon3", "eddie3");
+                if (cbc == null)
+                    el("null");
+                else g(cbc);
+
+                bool ret = await blobserver.ReleaseLock("base", "testcon3", "eddie3", cbc);
+                if (ret)
+                    g("good");
+                else el("still locked");
+
+            }).Start();
         }
 
         private void logTest2ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -76,7 +89,7 @@ namespace AdminApp
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            Closer();
+            new Thread(() => Closer()).Start();
         }
 
         private void Closer()

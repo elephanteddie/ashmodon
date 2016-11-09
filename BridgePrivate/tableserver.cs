@@ -11,14 +11,14 @@ namespace BridgePrivate
 {
     public static class tableserver
     {
-        public static CloudStorageAccount storageAccount = Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(Properties.Settings.Default.storage);
-        public static CloudTableClient tableClient = storageAccount.CreateCloudTableClient(); //bridgebase
+        private static CloudStorageAccount storageAccount = Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(Properties.Settings.Default.storage);
+        private static CloudTableClient tableClient = storageAccount.CreateCloudTableClient(); //bridgebase
 
-        public static Dictionary<string, CloudStorageAccount> stores = new Dictionary<string, CloudStorageAccount>();
-        public static Dictionary<string, CloudTableClient> clients = new Dictionary<string, CloudTableClient>();
-        public static Dictionary<string, log> logs = new Dictionary<string, log>();
+        private static Dictionary<string, CloudStorageAccount> stores = new Dictionary<string, CloudStorageAccount>();
+        private static Dictionary<string, CloudTableClient> clients = new Dictionary<string, CloudTableClient>();
+        private static Dictionary<string, log> logs = new Dictionary<string, log>();
 
-        public static log blog;
+        private static log blog;
 
         static tableserver()
         {            
@@ -204,7 +204,7 @@ namespace BridgePrivate
             }
         }
 
-        private static List<T> GetPS<T>(string user, string tableName, string partitionKey) where T : TableEntity, new()
+        public static List<T> GetPS<T>(string user, string tableName, string partitionKey) where T : TableEntity, new()
         {
             if (!gooduserS(user)) return null;
 
@@ -239,7 +239,7 @@ namespace BridgePrivate
             }
         }
 
-        private static async Task<List<T>> GetP<T>(string user, string tableName, string partitionKey) where T : TableEntity, new()
+        public static async Task<List<T>> GetP<T>(string user, string tableName, string partitionKey) where T : TableEntity, new()
         {
             if (!await gooduser(user)) return null;
 

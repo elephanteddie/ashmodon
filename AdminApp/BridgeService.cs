@@ -26,6 +26,9 @@ namespace AdminApp
 
         [OperationContract]
         string Rev(string text);
+
+        [OperationContract]
+        Task<string> getI(string user, string token, string tableName, string typ, string pk, string rk);
     }
 
     public interface IBridgeChannel : IBridgeContract, IClientChannel { }
@@ -65,6 +68,11 @@ namespace AdminApp
             }
         }
 
+        public async Task<string> getI(string user, string token, string tableName, string typ, string pk, string rk)
+        {
+            return "";
+        }
+        
         private void l(string s)
         {
             slog.l(gvars.iid + " " + s);
