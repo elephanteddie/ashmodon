@@ -26,86 +26,102 @@ namespace BridgePrivate
 
         public void l(string message1)
         {
-            new Thread(() =>
+            try
             {
-                try
+                new Thread(() =>
                 {
-                    var sendLog = new Logs
+                    try
                     {
-                        PartitionKey = "Log",
-                        RowKey = DateTime.Now.Ticks.ToString(),
-                        message = message1,
-                        batch = "1"
-                    };
+                        var sendLog = new Logs
+                        {
+                            PartitionKey = "Log",
+                            RowKey = DateTime.Now.Ticks.ToString(),
+                            message = message1,
+                            batch = "1"
+                        };
 
-                    tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
-                }
-                catch { }
+                        tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
+                    }
+                    catch { }
 
-            }).Start();
+                }).Start();
+            }
+            catch { }
         }
 
         public void el(string message1)
         {
-            new Thread(() =>
-            {
-                try
+            try 
+            { 
+                new Thread(() =>
                 {
-                    var sendLog = new Logs
+                    try
                     {
-                        PartitionKey = "Log",
-                        RowKey = DateTime.Now.Ticks.ToString(),
-                        message = message1,
-                        batch = "2"
-                    };
+                        var sendLog = new Logs
+                        {
+                            PartitionKey = "Log",
+                            RowKey = DateTime.Now.Ticks.ToString(),
+                            message = message1,
+                            batch = "2"
+                        };
 
-                    tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
-                }
-                catch { }
+                        tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
+                    }
+                    catch { }
 
-            }).Start();
+                }).Start();
+            }
+            catch { }
         }
 
         public void g(string message1)
         {
-            new Thread(() =>
-            {
-                try
+            try
+            { 
+                new Thread(() =>
                 {
-                    var sendLog = new Logs
+                    try
                     {
-                        PartitionKey = "Log",
-                        RowKey = DateTime.Now.Ticks.ToString(),
-                        message = message1,
-                        batch = "3"
-                    };
+                        var sendLog = new Logs
+                        {
+                            PartitionKey = "Log",
+                            RowKey = DateTime.Now.Ticks.ToString(),
+                            message = message1,
+                            batch = "3"
+                        };
 
-                    tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
-                }
-                catch { }
+                        tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
+                    }
+                    catch { }
 
-            }).Start();
+                }).Start();
+            }
+            catch { }
         }
 
         public void ex(string message1)
         {
-            new Thread(() =>
-            {
-                try
+            try 
+            { 
+                new Thread(() =>
                 {
-                    var sendLog = new Logs
+                    try
                     {
-                        PartitionKey = "Log",
-                        RowKey = DateTime.Now.Ticks.ToString(),
-                        message = message1,
-                        batch = "4"
-                    };
+                        var sendLog = new Logs
+                        {
+                            PartitionKey = "Log",
+                            RowKey = DateTime.Now.Ticks.ToString(),
+                            message = message1,
+                            batch = "4"
+                        };
 
-                    tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
-                }
-                catch { }
+                        tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
+                    }
+                    catch { }
 
-            }).Start();
+                }).Start();
+            }
+            catch { }
         }
     }
 }

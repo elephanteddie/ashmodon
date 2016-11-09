@@ -28,6 +28,7 @@ namespace BridgePrivate
 
             if (!seedDictionariesS())
                 blog.el("tableserver directory seed error");
+            else blog.g("tableserver constructed");
         }
 
         private static bool seedDictionariesS()
@@ -176,13 +177,13 @@ namespace BridgePrivate
             }
         }
 
-        private static List<T> GetPS<T>(string user, string tableName, string partitionKey) where T : TableEntity, new()
+        private static async Task<List<T>> GetP<T>(string user, string tableName, string partitionKey) where T : TableEntity, new()
         {
-            if (!gooduserS(user)) return null;
+            if (!await gooduser(user)) return null;
 
             try
             {
-                CloudTable table = gtS(user, tableName);
+                CloudTable table = await gt(user, tableName);
 
                 TableQuery<T> query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
 
@@ -191,7 +192,7 @@ namespace BridgePrivate
 
                 do
                 {
-                    TableQuerySegment<T> seg = table.ExecuteQuerySegmented<T>(query, tokenn);
+                    TableQuerySegment<T> seg = await table.ExecuteQuerySegmentedAsync<T>(query, tokenn);
                     tokenn = seg.ContinuationToken;
                     list.AddRange(seg);
 
@@ -211,13 +212,13 @@ namespace BridgePrivate
             }
         }
 
-        private static async Task<List<T>> GetP<T>(string user, string tableName, string partitionKey) where T : TableEntity, new()
+        private static List<T> GetPS<T>(string user, string tableName, string partitionKey) where T : TableEntity, new()
         {
-            if (!await gooduser(user)) return null;
+            if (!gooduserS(user)) return null;
 
             try
             {
-                CloudTable table = await gt(user, tableName);
+                CloudTable table = gtS(user, tableName);
 
                 TableQuery<T> query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
 
@@ -226,7 +227,7 @@ namespace BridgePrivate
 
                 do
                 {
-                    TableQuerySegment<T> seg = await table.ExecuteQuerySegmentedAsync<T>(query, tokenn);
+                    TableQuerySegment<T> seg = table.ExecuteQuerySegmented<T>(query, tokenn);
                     tokenn = seg.ContinuationToken;
                     list.AddRange(seg);
 
