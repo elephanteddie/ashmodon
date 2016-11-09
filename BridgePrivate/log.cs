@@ -13,84 +13,99 @@ namespace BridgePrivate
     {
         private string lognameIn;
         private string userIn;
+        private bool failed = false;
 
-        public async Task<log> makelog(string usin, string logname1)
+        public log(string usin, string logname1)
         {
             lognameIn = logname1;
             userIn = usin;
 
-            if (await tableserver.UpsertI<TableEntity>(userIn, "Logs", new TableEntity("Log", lognameIn)))
-                return this;
-
-            return null;
+            if (!tableserver.UpsertIS<TableEntity>(userIn, "Logs", new TableEntity("Log", lognameIn)))
+                failed = true;
         }
 
-        public async Task<bool> l(string message1)
+        public void l(string message1)
         {
-            var sendLog = new Logs
+            new Thread(() =>
             {
-                PartitionKey = "Log",
-                RowKey = DateTime.Now.Ticks.ToString(),
-                message = message1,
-                batch = "1"
-            };
+                try
+                {
+                    var sendLog = new Logs
+                    {
+                        PartitionKey = "Log",
+                        RowKey = DateTime.Now.Ticks.ToString(),
+                        message = message1,
+                        batch = "1"
+                    };
 
-            try
-            {
-                return await tableserver.UpsertI<Logs>(userIn, lognameIn, sendLog);
-            }
-            catch { return false; }
+                    tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
+                }
+                catch { }
+
+            }).Start();
         }
 
-        public async Task<bool> el(string message1)
+        public void el(string message1)
         {
-            var sendLog = new Logs
+            new Thread(() =>
             {
-                PartitionKey = "Log",
-                RowKey = DateTime.Now.Ticks.ToString(),
-                message = message1,
-                batch = "2"
-            };
+                try
+                {
+                    var sendLog = new Logs
+                    {
+                        PartitionKey = "Log",
+                        RowKey = DateTime.Now.Ticks.ToString(),
+                        message = message1,
+                        batch = "2"
+                    };
 
-            try
-            {
-                return await tableserver.UpsertI<Logs>(userIn, lognameIn, sendLog);
-            }
-            catch { return false; }
+                    tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
+                }
+                catch { }
+
+            }).Start();
         }
 
-        public async Task<bool> g(string message1)
+        public void g(string message1)
         {
-            var sendLog = new Logs
+            new Thread(() =>
             {
-                PartitionKey = "Log",
-                RowKey = DateTime.Now.Ticks.ToString(),
-                message = message1,
-                batch = "3"
-            };
+                try
+                {
+                    var sendLog = new Logs
+                    {
+                        PartitionKey = "Log",
+                        RowKey = DateTime.Now.Ticks.ToString(),
+                        message = message1,
+                        batch = "3"
+                    };
 
-            try
-            {
-                return await tableserver.UpsertI<Logs>(userIn, lognameIn, sendLog);
-            }
-            catch { return false; }
+                    tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
+                }
+                catch { }
+
+            }).Start();
         }
 
-        public async Task<bool> ex(string message1)
+        public void ex(string message1)
         {
-            var sendLog = new Logs
+            new Thread(() =>
             {
-                PartitionKey = "Log",
-                RowKey = DateTime.Now.Ticks.ToString(),
-                message = message1,
-                batch = "4"
-            };
+                try
+                {
+                    var sendLog = new Logs
+                    {
+                        PartitionKey = "Log",
+                        RowKey = DateTime.Now.Ticks.ToString(),
+                        message = message1,
+                        batch = "4"
+                    };
 
-            try
-            {
-                return await tableserver.UpsertI<Logs>(userIn, lognameIn, sendLog);
-            }
-            catch { return false; }
+                    tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
+                }
+                catch { }
+
+            }).Start();
         }
     }
 }

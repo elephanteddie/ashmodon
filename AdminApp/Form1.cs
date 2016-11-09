@@ -9,6 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BridgePrivate;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace AdminApp
 {
@@ -20,6 +22,44 @@ namespace AdminApp
         public Form1()
         {
             InitializeComponent();
+            this.toolStrip1.Visible = false;
+            this.ControlBox = false;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            l("Loading");
+
+            new Thread(() => 
+            {
+                dlog = new log("base", "AdminDebugLog");
+
+                this.Invoke((MethodInvoker)delegate()
+                {
+                    this.toolStrip1.Visible = true;
+                });
+
+                g("Load successful");
+
+            }).Start();       
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            l("closer");
+            this.toolStripButton1.Visible = false;
+            this.ControlBox = true;
+        }
+
+        private void logTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dlog.l("hi there");
+            l("hi");
+        }
+
+        private void logTest2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
 
         public void g(string message)
@@ -98,37 +138,6 @@ namespace AdminApp
                 this.richTextBox1.SelectionColor = Color.White;
                 this.richTextBox1.AppendText(message);
             });
-        }
-
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-            l("closer");
-        }
-
-        private void logTestToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            threads.Add(new Thread(async() => await makelog()));
-            threads.Last().Name = "makelog";
-            threads.Last().Start();
-        }
-
-        private async Task<bool> makelog()
-        {
-            var task = new log().makelog("base", "AdminDebugLog");
-            dlog = await task;
-
-            if (dlog != null)
-                g("good");
-            else el("bad");
-
-            return true;
-        }
-
-        private async void logTest2ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (await dlog.l("test"))
-                l("goodl");
-            else el("errl");
         }
     }
 }

@@ -33,10 +33,10 @@
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logTest2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.logTest2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,15 +69,22 @@
             this.logTestToolStripMenuItem,
             this.logTest2ToolStripMenuItem});
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            this.debugToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
             this.debugToolStripMenuItem.Text = "Debug";
             // 
             // logTestToolStripMenuItem
             // 
             this.logTestToolStripMenuItem.Name = "logTestToolStripMenuItem";
-            this.logTestToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.logTestToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.logTestToolStripMenuItem.Text = "log test";
             this.logTestToolStripMenuItem.Click += new System.EventHandler(this.logTestToolStripMenuItem_Click);
+            // 
+            // logTest2ToolStripMenuItem
+            // 
+            this.logTest2ToolStripMenuItem.Name = "logTest2ToolStripMenuItem";
+            this.logTest2ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.logTest2ToolStripMenuItem.Text = "log test 2";
+            this.logTest2ToolStripMenuItem.Click += new System.EventHandler(this.logTest2ToolStripMenuItem_Click);
             // 
             // toolStripButton1
             // 
@@ -111,13 +118,6 @@
             this.richTextBox1.TabIndex = 2;
             this.richTextBox1.Text = "";
             // 
-            // logTest2ToolStripMenuItem
-            // 
-            this.logTest2ToolStripMenuItem.Name = "logTest2ToolStripMenuItem";
-            this.logTest2ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.logTest2ToolStripMenuItem.Text = "log test 2";
-            this.logTest2ToolStripMenuItem.Click += new System.EventHandler(this.logTest2ToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -128,6 +128,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);

@@ -20,23 +20,45 @@ namespace BridgePrivate
         public static log blog;
 
         static tableserver()
-        {                        
+        {            
+            stores.Add("base", storageAccount);
+            clients.Add("base", tableClient);
+            logs.Add("base", new log("base", "TableStorageUserLog"));
+            blog = new log("base", "TableStorageBaseLog");
+
+            if (!seedDictionariesS())
+                blog.el("tableserver directory seed error");
+        }
+
+        private static bool seedDictionariesS()
+        {
+            try
+            {
+                List<sacstr> sacs = GetPS<sacstr>("base", "sacinfo", "sacstr");
+
+                foreach (sacstr te in sacs)
+                {
+                    if (!stores.ContainsKey(te.RowKey))
+                        stores.Add(te.RowKey, Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(te.sac));
+                    if (!clients.ContainsKey(te.RowKey))
+                        clients.Add(te.RowKey, stores[te.RowKey].CreateCloudTableClient());
+                    if (!logs.ContainsKey(te.RowKey))
+                        logs.Add(te.RowKey, new log(te.RowKey, "TableStorageUserLog"));
+                }
+
+                return true;
+            }
+            catch (Exception ex1)
+            {
+                blog.ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
+                return false;
+            }
         }
 
         private static async Task<bool> seedDictionaries()
         {
             try
             {
-                if (!stores.ContainsKey("base"))
-                    stores.Add("base", storageAccount);
-                if (!clients.ContainsKey("base"))
-                    clients.Add("base", tableClient);
-                if (!logs.ContainsKey("base"))
-                    logs.Add("base", await new log().makelog("base", "TableStorageUserLog"));
-                
-                if(blog == null)
-                    blog = await new log().makelog("base", "TableStorageBaseLog");
-
                 List<sacstr> sacs = await GetP<sacstr>("base", "sacinfo", "sacstr");
 
                 foreach (sacstr te in sacs)
@@ -46,18 +68,14 @@ namespace BridgePrivate
                     if (!clients.ContainsKey(te.RowKey))
                         clients.Add(te.RowKey, stores[te.RowKey].CreateCloudTableClient());
                     if (!logs.ContainsKey(te.RowKey))
-                        logs.Add(te.RowKey, await new log().makelog(te.RowKey, "TableStorageUserLog"));
+                        logs.Add(te.RowKey, new log(te.RowKey, "TableStorageUserLog"));
                 }
 
                 return true;
             }
             catch (Exception ex1)
             {
-                var task2 = Task.Run(async () =>
-                {
-                    return await blog.ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
-                });
-
+                blog.ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
                 return false;
             }
         }
@@ -72,14 +90,14 @@ namespace BridgePrivate
                     {
                         if (!stores.ContainsKey(usr))
                         {
-                            await blog.el(System.Reflection.MethodBase.GetCurrentMethod().Name + " invalid user request: " + usr);
+                            blog.el(System.Reflection.MethodBase.GetCurrentMethod().Name + " invalid user request: " + usr);
                             return false;
                         }
                         else return true;
                     }
                     else
                     {
-                        await blog.el(System.Reflection.MethodBase.GetCurrentMethod().Name + " invalid seed user: " + usr);
+                        blog.el(System.Reflection.MethodBase.GetCurrentMethod().Name + " invalid seed user: " + usr);
                         return false;
                     }
                 }
@@ -87,11 +105,37 @@ namespace BridgePrivate
             }
             catch (Exception ex1)
             {
-                var task2 = Task.Run(async () =>
+                blog.ex(usr + " on " + System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
+                return false;
+            }
+        }
+
+        private static bool gooduserS(string usr)
+        {
+            try
+            {
+                if (!stores.ContainsKey(usr))
                 {
-                    return await blog.ex(usr + " on " + System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
-                });
-                
+                    if (seedDictionariesS())
+                    {
+                        if (!stores.ContainsKey(usr))
+                        {
+                            blog.el(System.Reflection.MethodBase.GetCurrentMethod().Name + " invalid user request: " + usr);
+                            return false;
+                        }
+                        else return true;
+                    }
+                    else
+                    {
+                        blog.el(System.Reflection.MethodBase.GetCurrentMethod().Name + " invalid seed user: " + usr);
+                        return false;
+                    }
+                }
+                else return true;
+            }
+            catch (Exception ex1)
+            {
+                blog.ex(usr + " on " + System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
                 return false;
             }
         }
@@ -109,11 +153,60 @@ namespace BridgePrivate
             }
             catch (Exception ex1)
             {
-                var task2 = Task.Run(async () =>
+                logs[user].ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());               
+                return null;
+            }
+        }
+
+        private static CloudTable gtS(string user, string name)
+        {
+            if (!gooduserS(user)) return null;
+
+            try
+            {
+                var table = clients[user].GetTableReference(name);
+                table.CreateIfNotExists();
+
+                return table;
+            }
+            catch (Exception ex1)
+            {
+                logs[user].ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
+                return null;
+            }
+        }
+
+        private static List<T> GetPS<T>(string user, string tableName, string partitionKey) where T : TableEntity, new()
+        {
+            if (!gooduserS(user)) return null;
+
+            try
+            {
+                CloudTable table = gtS(user, tableName);
+
+                TableQuery<T> query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
+
+                List<T> list = new List<T>();
+                TableContinuationToken tokenn = null;
+
+                do
                 {
-                    return await logs[user].ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
-                });
-                
+                    TableQuerySegment<T> seg = table.ExecuteQuerySegmented<T>(query, tokenn);
+                    tokenn = seg.ContinuationToken;
+                    list.AddRange(seg);
+
+                } while (tokenn != null);
+
+                if (list.Count > 0)
+                    return list;
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex1)
+            {
+                logs[user].ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
                 return null;
             }
         }
@@ -148,11 +241,7 @@ namespace BridgePrivate
             }
             catch (Exception ex1)
             {
-                var task2 = Task.Run(async () =>
-                {
-                    return await logs[user].ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
-                });
-
+                logs[user].ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
                 return null;
             }
         }
@@ -172,19 +261,41 @@ namespace BridgePrivate
                     return true;
                 else
                 {
-                    await logs[user].el(item.PartitionKey + " " + item.RowKey + " UpsertI returned null");
+                    logs[user].el(item.PartitionKey + " " + item.RowKey + " UpsertI returned null");
                     return false;
                 }
             }
             catch (Exception ex1)
             {
-                var task2 = Task.Run(async () =>
-                {
-                    return await logs[user].ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
-                });
-                
+                logs[user].ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());            
                 return false;
             }
-        }       
+        }
+
+        public static bool UpsertIS<T>(string user, string tableName, T item) where T : TableEntity, new()
+        {
+            if (!gooduserS(user)) return false;
+
+            try
+            {
+                CloudTable table = gtS(user, tableName);
+
+                TableOperation upsertOperation = TableOperation.InsertOrReplace(item);
+                TableResult res1 = table.Execute(upsertOperation);
+
+                if (res1 != null)
+                    return true;
+                else
+                {
+                    logs[user].el(item.PartitionKey + " " + item.RowKey + " UpsertI returned null");
+                    return false;
+                }
+            }
+            catch (Exception ex1)
+            {
+                logs[user].ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
+                return false;
+            }
+        }
     }
 }
