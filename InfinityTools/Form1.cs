@@ -21,6 +21,7 @@ using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Interactions.Internal;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using System.Net;
 
 namespace InfinityTools
 {
@@ -32,6 +33,9 @@ namespace InfinityTools
 
         [OperationContract]
         string Rev(string text);
+
+        [OperationContract]
+        string Cred(string usr, string tok, string ip);
     }
 
     public interface IBridgeChannel : IBridgeContract, IClientChannel { }
@@ -48,6 +52,12 @@ namespace InfinityTools
         private KeyValuePair<string, CancellationToken> maintoken;
         public string EXEPath = "";
         private Dictionary<string, ChromeDriver> cdrivers;
+        public static bool ready2try = false;
+        public static Agility agility = new Agility();
+        private static bool noip { get; set; }
+        private CloudStorageAccount storageAccount = null;
+        private static PublicStore ps;
+        private static log log = null;
 
         public Form1()
         {
@@ -61,16 +71,48 @@ namespace InfinityTools
         {
             l("Loading");
 
+            ServicePointManager.DefaultConnectionLimit = 100;
             cdrivers = new Dictionary<string, ChromeDriver>();
 
             new Thread(() =>
-            {
+            {               
+                gvars.lip = agility.getIP();
+
+                if (gvars.lip == null || gvars.lip == "" || gvars.lip.Contains("error"))
+                {
+                    noip = true;
+                    el("Internet connection required to continue");
+                    el("IP test returned: " + gvars.lip);
+                    el("Please establish an internet connection and then restart this application");
+                    new Thread(() => Closer()).Start();
+                    return;
+                }
+                else noip = false;
+
+                if (!startRelay1())
+                {
+                    ex("Host relay required to continue");
+                    new Thread(() => Closer()).Start();
+                    return;
+                }
+
                 this.Invoke((MethodInvoker)delegate()
                 {
                     this.toolStrip1.Visible = true;
                 });
 
-                g("Load successful");
+                if (Properties.Settings.Default.webus == "none" || Properties.Settings.Default.webtok == "none")
+                {
+                    el("Update your web username and token under 'Options' to continue");
+
+                    ready2try = false;
+                }
+                else
+                {
+                    ready2try = true;
+                }
+
+                l("Load complete");
 
             }).Start();   
         }
@@ -244,6 +286,30 @@ namespace InfinityTools
             });
         }
 
+        private void gS(string s)
+        {
+            if (log != null)
+                log.g(s);
+        }
+
+        private void elS(string s)
+        {
+            if (log != null)
+                log.el(s);
+        }
+
+        private void exS(string s)
+        {
+            if (log != null)
+                log.ex(s);
+        }
+
+        private void lS(string s)
+        {
+            if (log != null)
+                log.l(s);
+        }
+
         private void startRelayChannel1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             l("Connecting...");
@@ -306,6 +372,69 @@ namespace InfinityTools
         private void channel1TestToolStripMenuItem_Click(object sender, EventArgs e)
         {
             l(channel.Echo("echo"));
+        }
+
+        private void resetCredentialsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.webus = "none";
+            Properties.Settings.Default.webtok = "none";
+            Properties.Settings.Default.refpath = "none";
+            Properties.Settings.Default.Save();
+        }
+
+        private void updateUserTokenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            Updater testDialog = new Updater();
+            try
+            {
+                // Show testDialog as a modal dialog and determine if DialogResult = OK.
+                if (testDialog.ShowDialog(this) == DialogResult.OK)
+                {
+                    threads.Add(new Thread(() => Updater()));
+                    threads.Last().Name = "Updater";
+                    threads.Last().Start();
+
+                }
+                else
+                {
+                    el("Update cancelled");
+                }
+            }
+            catch (Exception ex1)
+            {
+                ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
+            }
+
+            testDialog.Dispose();
+        }
+
+        private void Updater()
+        {
+            // Read the contents of testDialog's TextBox.
+            l("Validating web credentials...");
+            string s = "";
+
+            this.Invoke((MethodInvoker)delegate()
+            {
+                s = channel.Cred(Properties.Settings.Default.webus, Properties.Settings.Default.webtok, gvars.lip);
+            });
+
+            if (s.Contains("error"))
+            {
+                el("Invalid credentials.  Please update with valid web user and web token to continue.");
+            }
+            else
+            {
+                l(s);
+                storageAccount = Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(s);
+
+                ps = new PublicStore(storageAccount, Properties.Settings.Default.webus);
+
+                log = new log(Properties.Settings.Default.webus, "LogsLocalTools", storageAccount);
+                lS(Properties.Settings.Default.webus + " authenticated");
+                g("Credentials validated.");
+            }        
         }
     }
 }

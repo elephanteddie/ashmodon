@@ -31,6 +31,8 @@ namespace AdminApp
         public static List<Thread> threads = new List<Thread>();
         public tokens tokens = new tokens();
         private KeyValuePair<string, CancellationToken> maintoken;
+        public static SubscriptionClient Client = SubscriptionClient.CreateFromConnectionString(ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"], "AdminTopic", "AllMessages");
+        public static OnMessageOptions options = new OnMessageOptions();
 
         // debug log
         public static log dlog;
@@ -49,6 +51,26 @@ namespace AdminApp
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            options.AutoComplete = false;
+            options.AutoRenewTimeout = TimeSpan.FromMinutes(1);
+
+            Client.OnMessage((message) =>
+            {
+                try
+                {
+                    // Process message from subscription.
+                    l("Echo: " + message.GetBody<string>());
+
+                    // Remove message from subscription.
+                    message.Complete();
+                }
+                catch (Exception)
+                {
+                    // Indicates a problem, unlock message in subscription.
+                    message.Abandon();
+                }
+            }, options);
+
             new Thread(() => 
             {
                 try
@@ -248,7 +270,51 @@ namespace AdminApp
         private void RunAsync(CancellationToken cancellationToken)
         {
             try
-            {                
+            {
+                l("Setting up AdminTopic subscription");
+
+                TopicDescription td = new TopicDescription("AdminTopic");
+                td.MaxSizeInMegabytes = 5120;
+                td.DefaultMessageTimeToLive = new TimeSpan(0, 1, 0);
+
+                var namespaceManager = NamespaceManager.CreateFromConnectionString(ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"]);
+                if (!namespaceManager.TopicExists("AdminTopic"))
+                    namespaceManager.CreateTopic(td);
+
+                // change the subscription to instanceID!
+                if (!namespaceManager.SubscriptionExists("AdminTopic", gvars.iid))
+                    namespaceManager.CreateSubscription("AdminTopic", gvars.iid);
+
+                // change the subscription to instanceID!          
+                SubscriptionClient Client = SubscriptionClient.CreateFromConnectionString(ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"], "AdminTopic", gvars.iid);
+                OnMessageOptions options = new OnMessageOptions();
+                options.AutoComplete = false;
+                options.AutoRenewTimeout = TimeSpan.FromMinutes(1);
+
+                Client.OnMessage((message) =>
+                {
+                    try
+                    {
+                        // Process message from subscription.
+                        string body = message.GetBody<string>();
+                        if (body == "suspendBridge")
+                            l("received: suspendBridge = true");
+                        else if (body == "resumeBridge")
+                            l("received: suspendBridge = false");
+                        else el("AdminTopic message unhandled: " + body);
+
+                        // Remove message from subscription.
+                        message.Complete();
+                    }
+                    catch (Exception)
+                    {
+                        // Indicates a problem, unlock message in subscription.
+                        message.Abandon();
+                    }
+                }, options);
+
+                g("Subscripted to AdminTopic");
+
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     l("Setting up service host");
@@ -294,12 +360,28 @@ namespace AdminApp
                     }
                 }
 
-                el("BusRole cancellation requested");
+                el("BusRole stopped - cancellation requested");
             }
             catch (Exception ex1)
             {
                 ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
             }
+        }
+
+        private void suspendServiceBusToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TopicClient Client = TopicClient.CreateFromConnectionString(ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"], "AdminTopic");
+
+            Client.Send(new BrokeredMessage("suspendBridge"));
+            l("Sent");
+        }
+
+        private void resumeServiceBusToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TopicClient Client = TopicClient.CreateFromConnectionString(ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"], "AdminTopic");
+
+            Client.Send(new BrokeredMessage("resumeBridge"));
+            l("Sent");
         }      
     }
 }

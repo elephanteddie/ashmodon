@@ -38,6 +38,9 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.suspendServiceBusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resumeServiceBusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,7 +49,8 @@
             this.toolStrip1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripDropDownButton1,
-            this.toolStripButton1});
+            this.toolStripButton1,
+            this.toolStripDropDownButton2});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(846, 25);
@@ -126,6 +130,31 @@
             this.richTextBox1.TabIndex = 2;
             this.richTextBox1.Text = "";
             // 
+            // toolStripDropDownButton2
+            // 
+            this.toolStripDropDownButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.suspendServiceBusToolStripMenuItem,
+            this.resumeServiceBusToolStripMenuItem});
+            this.toolStripDropDownButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton2.Image")));
+            this.toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
+            this.toolStripDropDownButton2.Size = new System.Drawing.Size(174, 22);
+            this.toolStripDropDownButton2.Text = "ServiceBus Administration";
+            // 
+            // suspendServiceBusToolStripMenuItem
+            // 
+            this.suspendServiceBusToolStripMenuItem.Name = "suspendServiceBusToolStripMenuItem";
+            this.suspendServiceBusToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.suspendServiceBusToolStripMenuItem.Text = "Suspend ServiceBus";
+            this.suspendServiceBusToolStripMenuItem.Click += new System.EventHandler(this.suspendServiceBusToolStripMenuItem_Click);
+            // 
+            // resumeServiceBusToolStripMenuItem
+            // 
+            this.resumeServiceBusToolStripMenuItem.Name = "resumeServiceBusToolStripMenuItem";
+            this.resumeServiceBusToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.resumeServiceBusToolStripMenuItem.Text = "Resume ServiceBus";
+            this.resumeServiceBusToolStripMenuItem.Click += new System.EventHandler(this.resumeServiceBusToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -155,6 +184,9 @@
         private System.Windows.Forms.ToolStripMenuItem bridgeServiceEmulationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
+        private System.Windows.Forms.ToolStripMenuItem suspendServiceBusToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem resumeServiceBusToolStripMenuItem;
     }
 }
 

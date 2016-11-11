@@ -28,7 +28,7 @@ namespace AdminApp
         string Rev(string text);
 
         [OperationContract]
-        Task<string> getI(string user, string token, string tableName, string typ, string pk, string rk);
+        string Cred(string usr, string tok, string ip);
     }
 
     public interface IBridgeChannel : IBridgeContract, IClientChannel { }
@@ -37,6 +37,7 @@ namespace AdminApp
     class BridgeService : IBridgeContract
     {
         private static CloudStorageAccount storageAccount = Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(Properties.Settings.Default.storage);
+        private static PublicStore ps = new PublicStore(storageAccount, "base");
 
         private log slog = new log("base", "LogServicebusTablerelay", storageAccount);
 
@@ -70,9 +71,27 @@ namespace AdminApp
             }
         }
 
-        public async Task<string> getI(string user, string token, string tableName, string typ, string pk, string rk)
+        public string Cred(string usr, string tok, string ip)
         {
-            return "";
+            // check using stamp methodology from pandora RLtools updater
+            webtoken token = ps.GetI<webtoken>("webtoks", usr, usr).Result;
+            if(token == null)
+            {
+                return "error - no token found.  Please ensure you are using the correct username, or log into the Rosenlink website and generate your first token by navigating to Options -> Web Token";
+            }
+
+            if (token.tok != tok)
+            {
+                return "error - token mismatch. Please ensure you are using the correct username, or log into the Rosenlink website and copy paste the value found by navigating to Options -> Web Token";
+            }
+
+            sacstr sac = ps.GetI<sacstr>("sacinfo", "sacstr", usr).Result;
+            if (sac == null)
+            {
+                return "error - no cstr found.  Please ensure you are using the correct username, or log into the Rosenlink website and generate your first token by navigating to Options -> Web Token";
+            }
+
+            return sac.sac;
         }
         
         private void l(string s)

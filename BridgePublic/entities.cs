@@ -26,6 +26,23 @@ namespace BridgePublic
         public string sac { get; set; }
     }
 
+    public class webtoken : TableEntity
+    {
+        public string tok { get; set; }
+
+        public webtoken()
+        {
+            tok = Methods.getrand256();
+        }
+
+        public webtoken(string p)
+        {
+            tok = Methods.getrand256();
+            PartitionKey = p;
+            RowKey = p;
+        }
+    }
+
     public class tokens
     {
         public Dictionary<string, CancellationTokenSource> sources;
