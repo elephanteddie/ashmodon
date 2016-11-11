@@ -116,10 +116,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BridgePrivate\BridgePrivate.csproj">
-      <Project>{a9284e52-6847-40b8-96f5-b888f3839087}</Project>
-      <Name>BridgePrivate</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BridgePublic\BridgePublic.csproj">
       <Project>{e05a0eba-7423-493d-b8c6-bdd1a6fecb45}</Project>
       <Name>BridgePublic</Name>

@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
-using BridgePrivate;
 using System.ServiceModel;
 using Microsoft.ServiceBus;
 using System.ServiceModel.Description;
 using Microsoft.ServiceBus.Description;
 using System.Configuration;
 using Newtonsoft.Json;
+using BridgePublic;
 
 namespace AdminApp
 {
@@ -36,7 +36,9 @@ namespace AdminApp
     [ServiceBehavior(Name = "BridgeService", Namespace = "lolwtfbbq")]
     class BridgeService : IBridgeContract
     {
-        public log slog = new log("base", "ServicebusTablerelayLog");
+        private static CloudStorageAccount storageAccount = Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(Properties.Settings.Default.storage);
+
+        private log slog = new log("base", "LogServicebusTablerelay", storageAccount);
 
         public string Echo(string text)
         {

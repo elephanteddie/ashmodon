@@ -9,5 +9,6 @@ namespace AdminApp
     class gvars
     {
         internal static string iid = "BusRoleEmulation";
+
     }
 }

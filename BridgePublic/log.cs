@@ -6,23 +6,62 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
-using BridgePublic;
 
-namespace BridgePrivate
+namespace BridgePublic
 {
     public class log
     {
         private string lognameIn;
         private string userIn;
-        private bool failed = false;
+        private CloudStorageAccount storageAccount = null;
+        private CloudTableClient tableClient = null;
 
-        public log(string usin, string logname1)
+        public log(string usin, string logname1, CloudStorageAccount con)
         {
             lognameIn = logname1;
             userIn = usin;
+            storageAccount = con;
+            tableClient = storageAccount.CreateCloudTableClient();
 
-            if (!tableserver.UpsertIS<TableEntity>(userIn, "Logs", new TableEntity("Log", lognameIn)))
-                failed = true;
+            if (!UpsertIS<TableEntity>("Logs", new TableEntity("Log", lognameIn)))
+                throw new System.InvalidOperationException("failed to create log reference");
+        }
+
+        private CloudTable gtS(string name)
+        {
+            try
+            {
+                var table = tableClient.GetTableReference(name);
+                table.CreateIfNotExists();
+
+                return table;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private bool UpsertIS<T>(string tableName, T item) where T : TableEntity, new()
+        {
+            try
+            {
+                CloudTable table = gtS(tableName);
+
+                TableOperation upsertOperation = TableOperation.InsertOrReplace(item);
+                TableResult res1 = table.Execute(upsertOperation);
+
+                if (res1 != null)
+                    return true;
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public void l(string message1)
@@ -41,7 +80,7 @@ namespace BridgePrivate
                             batch = "1"
                         };
 
-                        tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
+                        UpsertIS<Logs>(lognameIn, sendLog);
                     }
                     catch { }
 
@@ -52,8 +91,8 @@ namespace BridgePrivate
 
         public void el(string message1)
         {
-            try 
-            { 
+            try
+            {
                 new Thread(() =>
                 {
                     try
@@ -66,7 +105,7 @@ namespace BridgePrivate
                             batch = "2"
                         };
 
-                        tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
+                        UpsertIS<Logs>(lognameIn, sendLog);
                     }
                     catch { }
 
@@ -78,7 +117,7 @@ namespace BridgePrivate
         public void g(string message1)
         {
             try
-            { 
+            {
                 new Thread(() =>
                 {
                     try
@@ -91,7 +130,7 @@ namespace BridgePrivate
                             batch = "3"
                         };
 
-                        tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
+                        UpsertIS<Logs>(lognameIn, sendLog);
                     }
                     catch { }
 
@@ -102,8 +141,8 @@ namespace BridgePrivate
 
         public void ex(string message1)
         {
-            try 
-            { 
+            try
+            {
                 new Thread(() =>
                 {
                     try
@@ -116,7 +155,7 @@ namespace BridgePrivate
                             batch = "4"
                         };
 
-                        tableserver.UpsertIS<Logs>(userIn, lognameIn, sendLog);
+                        UpsertIS<Logs>(lognameIn, sendLog);
                     }
                     catch { }
 

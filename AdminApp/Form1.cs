@@ -11,7 +11,6 @@ using System.Windows.Forms;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Microsoft.WindowsAzure.Storage.Blob;
-using BridgePrivate;
 using BridgePublic;
 using System.Diagnostics;
 using System.ServiceModel;
@@ -27,12 +26,14 @@ namespace AdminApp
     public partial class Form1 : Form
     {
         // housekeeping
+        private CloudStorageAccount storageAccount = null;
+        private static PublicStore ps;
         public static List<Thread> threads = new List<Thread>();
         public tokens tokens = new tokens();
         private KeyValuePair<string, CancellationToken> maintoken;
 
         // debug log
-        public log dlog;
+        public static log dlog;
 
         // stuff to emulate bridgeservice
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -48,43 +49,30 @@ namespace AdminApp
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            l("Loading");
-
             new Thread(() => 
             {
-                dlog = new log("base", "AdminDebugLog");
-
-                this.Invoke((MethodInvoker)delegate()
+                try
                 {
-                    this.toolStrip1.Visible = true;
-                });
+                    l("Loading");
+                    storageAccount = Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(Properties.Settings.Default.storage);
 
-                g("Load successful");
+                    ps = new PublicStore(storageAccount, "base");
+                    
+                    dlog = new log("base", "LogsAdminDebug", storageAccount);
+
+                    this.Invoke((MethodInvoker)delegate()
+                    {
+                        this.toolStrip1.Visible = true;
+                    });
+
+                    g("Load successful");
+                }
+                catch (Exception ex1)
+                {
+                    ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
+                }
 
             }).Start();       
-        }
-
-        private void logTestToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            new Thread( async () => 
-            {
-
-                string cbc = await blobserver.GetLock("base", "testcon3", "eddie3");
-                if (cbc == null)
-                    el("null");
-                else g(cbc);
-
-                bool ret = await blobserver.ReleaseLock("base", "testcon3", "eddie3", cbc);
-                if (ret)
-                    g("good");
-                else el("still locked");
-
-            }).Start();
-        }
-
-        private void logTest2ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -244,6 +232,11 @@ namespace AdminApp
             });
         }
 
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.cancellationTokenSource.Cancel();
+        }
+
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
             l("Starting service");
@@ -305,13 +298,8 @@ namespace AdminApp
             }
             catch (Exception ex1)
             {
-                ex(ex1.Message + " " + ex1.ToString());
+                ex(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + ex1.ToString());
             }
-        }
-
-        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.cancellationTokenSource.Cancel();
-        }
+        }      
     }
 }

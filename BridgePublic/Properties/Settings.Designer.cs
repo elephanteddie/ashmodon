@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AdminApp.Properties {
+namespace BridgePublic.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -20,17 +20,6 @@ namespace AdminApp.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("DefaultEndpointsProtocol=https;AccountName=bridgebase;AccountKey=ezrwMqDYneIQVqR6" +
-            "9YwSnh74+grGpRmlFAfkzRACjJEkTRYievAvl5QeXDK6K+RrN+uk2UGHUUplFaRFTpOukw==")]
-        public string storage {
-            get {
-                return ((string)(this["storage"]));
             }
         }
     }

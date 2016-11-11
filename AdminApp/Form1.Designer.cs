@@ -32,8 +32,6 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.logTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.logTest2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bridgeServiceEmulationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,26 +67,9 @@
             // 
             // debugToolStripMenuItem
             // 
-            this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.logTestToolStripMenuItem,
-            this.logTest2ToolStripMenuItem});
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             this.debugToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.debugToolStripMenuItem.Text = "Debug";
-            // 
-            // logTestToolStripMenuItem
-            // 
-            this.logTestToolStripMenuItem.Name = "logTestToolStripMenuItem";
-            this.logTestToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
-            this.logTestToolStripMenuItem.Text = "log test";
-            this.logTestToolStripMenuItem.Click += new System.EventHandler(this.logTestToolStripMenuItem_Click);
-            // 
-            // logTest2ToolStripMenuItem
-            // 
-            this.logTest2ToolStripMenuItem.Name = "logTest2ToolStripMenuItem";
-            this.logTest2ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
-            this.logTest2ToolStripMenuItem.Text = "log test 2";
-            this.logTest2ToolStripMenuItem.Click += new System.EventHandler(this.logTest2ToolStripMenuItem_Click);
             // 
             // bridgeServiceEmulationToolStripMenuItem
             // 
@@ -102,14 +83,14 @@
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
             // stopToolStripMenuItem
             // 
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.stopToolStripMenuItem.Text = "Stop";
             this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
@@ -154,7 +135,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Admin App";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
@@ -171,8 +152,6 @@
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.ToolStripMenuItem logTestToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem logTest2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bridgeServiceEmulationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
