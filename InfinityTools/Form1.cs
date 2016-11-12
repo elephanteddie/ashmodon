@@ -390,7 +390,6 @@ namespace InfinityTools
 
         private void updateUserTokenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             Updater testDialog = new Updater();
             try
             {
@@ -427,6 +426,9 @@ namespace InfinityTools
 
             if (s.Contains("error"))
             {
+                ps = null;
+                log = null;
+
                 el(s);
                 el("Please update with valid web user and web token to continue.");
 
