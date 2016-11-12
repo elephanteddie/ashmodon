@@ -16,7 +16,7 @@ using System.Configuration;
 using Newtonsoft.Json;
 using BridgePublic;
 
-namespace AdminApp
+namespace BusRole
 {
     [ServiceContract(Name = "IBridgeContract", Namespace = "lolwtfbbq")]
     public interface IBridgeContract
@@ -137,74 +137,7 @@ namespace AdminApp
             }
 
             return rehpis.Encrypt(sac.sac, usr);
-        }
-
-        public string Cred1(string usr, string tok, string ip)
-        {
-            // was there a bad attempt in last 5 minutes?
-            // if so, reject
-            // if not, check this attempt
-            // if good continue
-            // if bad, reject and mark new bad attempt
-
-
-
-            //////////////////////////////////////////////////////////////////////////////
-
-            // check using stamp methodology from pandora RLtools updater
-            stamp stmp = ps.GetI<stamp>("attemptIp", "IP", ip).Result;
-            if (stmp != null)
-            {
-                if (stmp.retMinutes() < 5.0)
-                {
-                    return "error - too many requests from IP. Please wait " + Math.Round(5.0 - stmp.retMinutes(), 2) + " minutes";
-                }
-            }
-
-            var stmpr = new stamp("IP", ip);
-            if (!ps.UpsertI<stamp>("attemptIp", stmpr).Result)
-                return "error - stamp upsert";
-
-            var stmpr2 = ps.GetI<stamp>("attemptUser", "USER", usr).Result;
-            if (stmpr2 == null)
-            {
-                stmpr2 = new stamp("USER", usr);
-                if(!ps.UpsertI<stamp>("attemptUser", stmpr2).Result)
-                    return "error - stamp upsert 2";
-            }
-            else
-            {
-                if (stmpr2.retMinutes() > 5)
-                {
-                    stmpr2 = new stamp("USER", usr);
-                    if (!ps.UpsertI<stamp>("attemptUser", stmpr2).Result)
-                        return "error - stamp upsert 3";
-                }
-                else
-                {
-                    return "error - too many requests for user. Please wait " + Math.Round(5.0 - stmpr2.retMinutes(), 2) + " minutes";
-                }
-            }
-
-            webtoken token = ps.GetI<webtoken>("webtoks", usr, usr).Result;
-            if(token == null)
-            {
-                return "error - no token found.  Please ensure you are using the correct username, or log into the Rosenlink website and generate your first token by navigating to Options -> Web Token";
-            }
-
-            if (token.tok != tok)
-            {
-                return "error - token mismatch. Please ensure you are using the correct username, or log into the Rosenlink website and copy paste the value found by navigating to Options -> Web Token";
-            }
-
-            sacstr sac = ps.GetI<sacstr>("sacinfo", "sacstr", usr).Result;
-            if (sac == null)
-            {
-                return "error - no cstr found.  Please ensure you are using the correct username, or log into the Rosenlink website and generate your first token by navigating to Options -> Web Token";
-            }
-
-            return rehpis.Encrypt(sac.sac, usr);
-        }
+        }       
         
         private void l(string s)
         {

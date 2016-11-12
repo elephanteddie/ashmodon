@@ -40,6 +40,7 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.resetCredentialsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateUserTokenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.signInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,8 +60,9 @@
             // 
             this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.debugToolStripMenuItem,
-            this.updateUserTokenToolStripMenuItem});
+            this.signInToolStripMenuItem,
+            this.updateUserTokenToolStripMenuItem,
+            this.debugToolStripMenuItem});
             this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
@@ -145,6 +147,13 @@
             this.updateUserTokenToolStripMenuItem.Text = "Update User Token";
             this.updateUserTokenToolStripMenuItem.Click += new System.EventHandler(this.updateUserTokenToolStripMenuItem_Click);
             // 
+            // signInToolStripMenuItem
+            // 
+            this.signInToolStripMenuItem.Name = "signInToolStripMenuItem";
+            this.signInToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.signInToolStripMenuItem.Text = "Sign In";
+            this.signInToolStripMenuItem.Click += new System.EventHandler(this.signInToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -176,6 +185,7 @@
         private System.Windows.Forms.ToolStripMenuItem channel1TestToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem resetCredentialsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem updateUserTokenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem signInToolStripMenuItem;
     }
 }
 

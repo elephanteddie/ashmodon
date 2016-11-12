@@ -382,6 +382,13 @@ namespace AdminApp
 
             Client.Send(new BrokeredMessage("resumeBridge"));
             l("Sent");
+        }
+
+        private void encodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string s = rehpis.Encrypt("constr", "webus");
+            l(s);
+            l(rehpis.Decrypt(s, "webus"));
         }      
     }
 }

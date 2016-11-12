@@ -41,6 +41,7 @@
             this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
             this.suspendServiceBusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resumeServiceBusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.encodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,6 +72,8 @@
             // 
             // debugToolStripMenuItem
             // 
+            this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.encodeToolStripMenuItem});
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             this.debugToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.debugToolStripMenuItem.Text = "Debug";
@@ -87,14 +90,14 @@
             // startToolStripMenuItem
             // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
             // stopToolStripMenuItem
             // 
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.stopToolStripMenuItem.Text = "Stop";
             this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
@@ -155,6 +158,13 @@
             this.resumeServiceBusToolStripMenuItem.Text = "Resume ServiceBus";
             this.resumeServiceBusToolStripMenuItem.Click += new System.EventHandler(this.resumeServiceBusToolStripMenuItem_Click);
             // 
+            // encodeToolStripMenuItem
+            // 
+            this.encodeToolStripMenuItem.Name = "encodeToolStripMenuItem";
+            this.encodeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.encodeToolStripMenuItem.Text = "encode";
+            this.encodeToolStripMenuItem.Click += new System.EventHandler(this.encodeToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -187,6 +197,7 @@
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
         private System.Windows.Forms.ToolStripMenuItem suspendServiceBusToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem resumeServiceBusToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem encodeToolStripMenuItem;
     }
 }
 

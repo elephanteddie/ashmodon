@@ -42,6 +42,27 @@ namespace BridgePublic
             RowKey = p;
         }
     }
+    public class stamp : TableEntity
+    {
+        public DateTime tstamp { get; set; }
+
+        public stamp()
+        {
+            tstamp = DateTime.UtcNow;
+        }
+
+        public stamp(string p1, string p2)
+        {
+            tstamp = DateTime.UtcNow;
+            PartitionKey = p1;
+            RowKey = p2;
+        }
+
+        public double retMinutes()
+        {
+            return (DateTime.UtcNow - tstamp).TotalMinutes;
+        }
+    }
 
     public class tokens
     {

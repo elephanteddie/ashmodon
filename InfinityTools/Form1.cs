@@ -69,6 +69,9 @@ namespace InfinityTools
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.Text = "Infinity Tools - Not signed in";
+            this.signInToolStripMenuItem.Text = "Sign In";
+            this.signInToolStripMenuItem.BackColor = Color.IndianRed;
             l("Loading");
 
             ServicePointManager.DefaultConnectionLimit = 100;
@@ -113,12 +116,15 @@ namespace InfinityTools
                 }
 
                 l("Load complete");
+                l("Please update user and token if needed and 'Sign In' under 'Options' to continue");
+                l("Note that updating user or token will sign you in automatically");
 
             }).Start();   
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
+            l("Preparing to exit...");
             new Thread(() => Closer()).Start();
         }
 
@@ -394,7 +400,6 @@ namespace InfinityTools
                     threads.Add(new Thread(() => Updater()));
                     threads.Last().Name = "Updater";
                     threads.Last().Start();
-
                 }
                 else
                 {
@@ -422,19 +427,39 @@ namespace InfinityTools
 
             if (s.Contains("error"))
             {
-                el("Invalid credentials.  Please update with valid web user and web token to continue.");
+                el(s);
+                el("Please update with valid web user and web token to continue.");
+
+                this.Invoke((MethodInvoker)delegate()
+                {
+                    this.Text = "Infinity Tools - Not signed in";
+                    this.signInToolStripMenuItem.Text = "Sign In";
+                    this.signInToolStripMenuItem.BackColor = Color.IndianRed;
+                });               
             }
             else
             {
-                l(s);
-                storageAccount = Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(s);
+                storageAccount = Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(rehpis.Decrypt(s, Properties.Settings.Default.webus));
 
                 ps = new PublicStore(storageAccount, Properties.Settings.Default.webus);
 
                 log = new log(Properties.Settings.Default.webus, "LogsLocalTools", storageAccount);
                 lS(Properties.Settings.Default.webus + " authenticated");
                 g("Credentials validated.");
+                this.Invoke((MethodInvoker)delegate()
+                {
+                    this.Text = "Infinity Tools - Signed in";
+                    this.signInToolStripMenuItem.Text = "Signed In";
+                    this.signInToolStripMenuItem.BackColor = Color.Green;
+                });
             }        
+        }
+
+        private void signInToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            threads.Add(new Thread(() => Updater()));
+            threads.Last().Name = "Updater";
+            threads.Last().Start();
         }
     }
 }

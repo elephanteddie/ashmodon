@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="CloudServBus" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2015-04.2.6">
+  <Role name="BusRole">
+    <Instances count="2" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=bridgebase;AccountKey=ezrwMqDYneIQVqR69YwSnh74+grGpRmlFAfkzRACjJEkTRYievAvl5QeXDK6K+RrN+uk2UGHUUplFaRFTpOukw==" />
+    </ConfigurationSettings>
+  </Role>
+</ServiceConfiguration>
